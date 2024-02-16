@@ -1,16 +1,40 @@
 import { Hono } from 'hono'
 import { logger } from 'hono/logger'
+import { prettyJSON } from 'hono/pretty-json'
+import { cors } from "hono/cors";
+import { connectDB, disconnectDb } from './config/db';
 
 
-const app = new Hono();
+const app = new Hono().basePath('/api');
 
-app.use(logger())
+connectDB();
+
+app.use(logger(), prettyJSON());
+
+// Cors
+app.use(
+  '*',
+  cors({
+    origin: '*',
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  })
+)
 
 app.get('/', (c) => {
-  return c.json({data: 'Ciao Marìe, sei proprio bella!'});
+  return c.text("jamm 'fa a spes ja");
 })
 
-export default {
+const server = Bun.serve({
   fetch: app.fetch,
-  port: process.env.PORT || 3000,
-} 
+  port: Bun.env.PORT || 3000,
+})
+
+console.log(`Listening on port ${server.url}`);
+
+const shutdown = async () => {
+  console.log("Shutting down...");
+  disconnectDb().then(() => process.exit());
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
