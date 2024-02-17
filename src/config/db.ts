@@ -16,9 +16,9 @@ const getDbURI = () => {
 const connectDB = async () => {
    try {
       const dbURI = getDbURI();
-      console.log('dbURI :>> ', dbURI);
       const connection = await mongoose.connect(dbURI, {
          autoIndex: true,
+         dbName: 'anm_ktm'
       })
       console.log(`MongoDB Connected: ${connection.connection.host}`);
    } catch (err: any) {

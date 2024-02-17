@@ -3,7 +3,7 @@ import { logger } from 'hono/logger'
 import { prettyJSON } from 'hono/pretty-json'
 import { cors } from "hono/cors";
 import { connectDB, disconnectDb } from './config/db';
-import { List } from './models/listModel';
+import { ListRoute } from './routes';
 
 const app = new Hono().basePath('/api');
 
@@ -21,10 +21,12 @@ app.use(
 )
 
 app.get('/', async (c) => {
-  const lollo = await List.find({name: 'lollo'});
-  console.log('lollo :>> ', lollo);
-  return c.json(lollo);
-})
+  return c.json("affammoc");
+});
+
+
+app.route('/lists', ListRoute);
+
 
 const server = Bun.serve({
   fetch: app.fetch,
