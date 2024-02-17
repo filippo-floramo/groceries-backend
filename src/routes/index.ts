@@ -1,1 +1,1 @@
-export {default as ListRoute} from "./listRoutes"
+export { default as ListRoute } from "./listRoutes"

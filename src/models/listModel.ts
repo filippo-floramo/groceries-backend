@@ -9,6 +9,7 @@ const listSchema = new Schema({
       checked: {type: Boolean, required: true, default: false},
       price: Number
    }],
+   shareId: {type: String, required: true}
 });
 
 
