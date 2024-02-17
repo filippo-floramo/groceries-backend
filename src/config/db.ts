@@ -16,11 +16,11 @@ const getDbURI = () => {
 const connectDB = async () => {
    try {
       const dbURI = getDbURI();
-      const connection = await mongoose.connect(dbURI, {
+      const { connection } = await mongoose.connect(dbURI, {
          autoIndex: true,
          dbName: 'anm_ktm'
       })
-      console.log(`MongoDB Connected: ${connection.connection.host}`);
+      console.log(`MongoDB Connected: ${connection.host} on port ${connection.port}`);
    } catch (err: any) {
       console.error(`Error: ${err.message}`)
       process.exit(1);
