@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { List } from "../models/listModel";
+import { List } from '../models';
 import { getShortRandomUniqueId } from "../utils";
 
 const listRoute = new Hono();
