@@ -70,6 +70,9 @@ listRoute.put('/:id', async (c) => {
       );
    }
 });
+
+
+//gestire CRUD qui dentro fancedon un findOne() e poi un save()
 listRoute.put('/:id/item', async (c) => {
    const { id } = c.req.param();
    const { itemId, update }: {
