@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import { List } from '../models';
-import { getShortRandomUniqueId } from "../utils";
+import { List } from './models';
+import { getShortRandomUniqueId } from "../../utils";
 
 const listRoute = new Hono();
 
@@ -88,7 +88,7 @@ listRoute.put('/:id/item', async (c) => {
    console.log('update :>> ', update);
 
    const updateItemObject = Object.entries(update).reduce((obj, [key, value]) => ({ ...obj, [`items.$.${key}`]: value }), {});
- 
+
    try {
       const list = await List.updateOne(
          { _id: id, "items._id": itemId },
@@ -128,4 +128,4 @@ listRoute.delete('/:id', async (c) => {
 })
 
 
-export default listRoute;
+export { listRoute as ListRoute };
