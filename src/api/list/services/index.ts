@@ -1,4 +1,4 @@
-import { ItemUpdateBody} from "../types";
+import { ItemUpdateBody, UpdateItemAction} from "../types";
 
 
 
@@ -8,12 +8,11 @@ export const getDbFilterAndUpdateObject = ({ listId, body }: {
    body: ItemUpdateBody
 }) => {
 
-
    let updateOperation
    let filter;
 
    switch (body.updateAction) {
-      case "edit_item":
+      case UpdateItemAction.edit:
          const updateItemObject = Object.entries(body.payload).reduce((obj, [key, value]) => ({ ...obj, [`items.$.${key}`]: value }), {});
 
          filter = { _id: listId, "items._id": body.itemId };
@@ -21,13 +20,13 @@ export const getDbFilterAndUpdateObject = ({ listId, body }: {
             $set: updateItemObject
          }
          break;
-      case "add_item":
+      case UpdateItemAction.add:
          filter = { _id: listId };
          updateOperation = {
             $push: { items: body.payload }
          };
          break;
-      case "delete_item":
+      case UpdateItemAction.delete:
          filter = { _id: listId };
          updateOperation = {
             $pull: {

@@ -1,7 +1,7 @@
-type UpdateItemAction = {
-   add: "add_item",
-   edit: "edit_item",
-   delete: "delete_item"
+export enum UpdateItemAction  {
+   add = "add_item",
+   edit = "edit_item",
+   delete = "delete_item"
 }
 
 type Item = {
@@ -14,17 +14,17 @@ type Item = {
 
 export type ItemUpdateBody =
    {
-      updateAction: UpdateItemAction["add"],
+      updateAction: UpdateItemAction.add,
       payload: Item
    }
    |
    {
-      updateAction: UpdateItemAction["edit"],
+      updateAction: UpdateItemAction.edit,
       itemId: string
       payload: Item
    }
    |
    {
-      updateAction: UpdateItemAction["delete"],
+      updateAction: UpdateItemAction.delete,
       itemId: string
    }
