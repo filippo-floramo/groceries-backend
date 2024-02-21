@@ -64,6 +64,7 @@ listRoute.put('/:id', async (c) => {
 
    try {
       const list = await List.findByIdAndUpdate(id, update, { runValidators: true, includeResultMetadata: true });
+      if (list === null) throw new Error('List not found');
 
       return c.json(list);
    } catch (error: any) {
@@ -89,13 +90,13 @@ listRoute.put('/:id/item',
          listId: id,
          body
       })
-
       try {
          const list = await List.findOneAndUpdate(
             filter,
             updateOperation,
             { new: true }
          );
+      if (list === null) throw new Error('List not found');
 
          return c.json(list);
       } catch (error: any) {
