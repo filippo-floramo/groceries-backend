@@ -53,7 +53,7 @@ listRoute.post('/', async (c) => {
    }
    return c.json({
       message: "List created successfully",
-      item: res
+      list: res
    })
 });
 

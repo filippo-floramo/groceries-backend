@@ -10,7 +10,7 @@ const listSchema = new Schema({
       price: { type: Number, required: true, default: 0 }
    }],
    shareId: { type: String, required: true }
-});
+}, {versionKey: false});
 
 
 export const List = model('List', listSchema);
