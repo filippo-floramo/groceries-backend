@@ -24,16 +24,10 @@ app.get('/', async (c) => {
   return c.json("affammoc");
 });
 
-
 app.route('/lists', ListRoute);
 
 
-const server = Bun.serve({
-  fetch: app.fetch,
-  port: Bun.env.PORT || 3000,
-})
-
-console.log(`Listening on port ${server.url}`);
+export default app
 
 const shutdown = async () => {
   console.log("Shutting down...");
