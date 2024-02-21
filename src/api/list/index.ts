@@ -1,6 +1,8 @@
 import { Hono } from 'hono'
 import { List } from './models';
 import { getShortRandomUniqueId } from "../../utils";
+import { getDbFilterAndUpdateObject } from './services';
+import { ItemUpdateBody } from './types';
 
 const listRoute = new Hono();
 
@@ -72,35 +74,23 @@ listRoute.put('/:id', async (c) => {
 });
 
 
-//gestire CRUD qui dentro fancedon un findOne() e poi un save()
 listRoute.put('/:id/item', async (c) => {
    const { id } = c.req.param();
-   const { itemId, update }: {
-      itemId: string,
-      update: {
-         itemName: string;
-         checked: boolean;
-         price?: number;
-      }
-   } = await c.req.json();
+   const body: ItemUpdateBody = await c.req.json();
 
-   console.log('itemId :>> ', itemId);
-   console.log('update :>> ', update);
-
-   const updateItemObject = Object.entries(update).reduce((obj, [key, value]) => ({ ...obj, [`items.$.${key}`]: value }), {});
+   const { filter, updateOperation } = getDbFilterAndUpdateObject({
+      listId: id,
+      body
+   })
 
    try {
-      const list = await List.updateOne(
-         { _id: id, "items._id": itemId },
-         {
-            $set: updateItemObject
-         },
+      const list = await List.findOneAndUpdate(
+         filter,
+         updateOperation,
+         { new: true }
       );
 
-
       return c.json(list);
-
-
    } catch (error: any) {
       const errMessage = error.message
       c.status(400)

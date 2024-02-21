@@ -3,13 +3,13 @@ import * as mongoose from 'mongoose'
 
 
 const listSchema = new Schema({
-   name: {type: String, required: true},
+   name: { type: String, required: true },
    items: [{
-      itemName: {type: String, required: true},
-      checked: {type: Boolean, required: true, default: false},
-      price: Number
+      itemName: { type: String, required: true },
+      checked: { type: Boolean, required: true, default: false },
+      price: { type: Number, required: true, default: 0 }
    }],
-   shareId: {type: String, required: true}
+   shareId: { type: String, required: true }
 });
 
 
