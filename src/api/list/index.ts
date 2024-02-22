@@ -69,7 +69,7 @@ listRoute.put('/:id',
 
       try {
          const list = await List.findByIdAndUpdate(id, update, { runValidators: true, includeResultMetadata: true, new: true });
-         if (list === null) throw new Error('List not found');
+         if (list.value === null) throw new Error('List not found');
 
          return c.json(list);
       } catch (error: any) {
@@ -99,9 +99,9 @@ listRoute.put('/:id/item',
          const list = await List.findOneAndUpdate(
             filter,
             updateOperation,
-            { new: true }
+            { new: true, includeResultMetadata: true }
          );
-         if (list === null) throw new Error('List not found');
+         if (list.value === null) throw new Error('List not found');
 
          return c.json(list);
       } catch (error: any) {

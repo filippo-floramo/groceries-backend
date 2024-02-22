@@ -27,7 +27,7 @@ export const getDbFilterAndUpdateObject = ({ listId, body }: {
          };
          break;
       case UpdateItemAction.delete:
-         filter = { _id: listId };
+         filter = { _id: listId, "items._id": body.itemId };
          updateOperation = {
             $pull: {
                items: { _id: body.itemId }

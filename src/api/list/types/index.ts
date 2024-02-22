@@ -1,8 +1,4 @@
-export enum UpdateItemAction  {
-   add = "add_item",
-   edit = "edit_item",
-   delete = "delete_item"
-}
+
 
 type Item = {
    itemName?: string,
@@ -10,7 +6,11 @@ type Item = {
    checked?: boolean
 }
 
-
+export enum UpdateItemAction  {
+   add = "add_item",
+   edit = "edit_item",
+   delete = "delete_item"
+}
 
 export type ItemUpdateBody =
    {
