@@ -3,8 +3,8 @@ import { List } from './models';
 import { getShortRandomUniqueId } from "../../utils";
 import { getDbFilterAndUpdateObject } from './services';
 import { ItemUpdateBody } from './types';
+import { updateItemSchema, updateListSchema } from './validation';
 import { zValidator } from '@hono/zod-validator';
-import { updateItemSchema } from './validation';
 
 const listRoute = new Hono();
 
@@ -58,23 +58,28 @@ listRoute.post('/', async (c) => {
 });
 
 
-listRoute.put('/:id', async (c) => {
-   const { id } = c.req.param();
-   const update: Partial<List> = await c.req.json();
+listRoute.put('/:id',
+   zValidator(
+      "json",
+      updateListSchema
+   ),
+   async (c) => {
+      const { id } = c.req.param();
+      const update: Partial<List> = await c.req.json();
 
-   try {
-      const list = await List.findByIdAndUpdate(id, update, { runValidators: true, includeResultMetadata: true });
-      if (list === null) throw new Error('List not found');
+      try {
+         const list = await List.findByIdAndUpdate(id, update, { runValidators: true, includeResultMetadata: true, new: true });
+         if (list === null) throw new Error('List not found');
 
-      return c.json(list);
-   } catch (error: any) {
-      const errMessage = error.message
-      c.status(400)
-      return c.json(
-         errMessage
-      );
-   }
-});
+         return c.json(list);
+      } catch (error: any) {
+         const errMessage = error.message
+         c.status(400)
+         return c.json(
+            errMessage
+         );
+      }
+   });
 
 
 listRoute.put('/:id/item',
@@ -96,7 +101,7 @@ listRoute.put('/:id/item',
             updateOperation,
             { new: true }
          );
-      if (list === null) throw new Error('List not found');
+         if (list === null) throw new Error('List not found');
 
          return c.json(list);
       } catch (error: any) {
