@@ -43,6 +43,21 @@ describe("/lists endpoint", () => {
       });
    });
 
+   test("GET /:id >> Should return a single list", async () => {
+      const res = await app.request(`${apiUrl}/lists/${listFixtures.oneItemList._id}`)
+      const parsedRes = await res.json();
+      expect(parsedRes).toEqual(listFixtures.oneItemList);
+   });
+   
+   test("GET /:id >> Should THROW ERROR when trying to get a single list", async () => {
+
+      const wrongId = "65d6208cc8f69d5a5b42990a"
+      const res = await app.request(`${apiUrl}/lists/${wrongId}`)
+      const parsedRes = await res.json();
+      expect(res.status).toBe(400);
+      expect(parsedRes).toBe("List id not found")
+   });
+
    test("POST / >> Should create a new list", async () => {
       const bodypayload = {
          _id: "65d65f04acb821ff567d4bf0",
