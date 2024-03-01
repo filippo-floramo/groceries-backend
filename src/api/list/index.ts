@@ -22,6 +22,9 @@ listRoute.get('/:id', async (c) => {
    try {
       const list = await List.findById(id);
 
+      if(!list) {
+         throw Error("List id not found")
+      }
       return c.json(list);
    } catch (error: any) {
       const errMessage = error.message;
