@@ -27,7 +27,16 @@ app.get('/', async (c) => {
 app.route('/lists', ListRoute);
 
 
-export default app
+const lol = Bun.serve({
+  port: 3000,
+  fetch: app.fetch,
+  hostname: Bun.env.ENVIRONMENT === "development" ? "192.168.1.6" : "0.0.0.0",
+})
+
+console.table({
+  port: lol.port,
+  hostname: lol.hostname
+});
 
 const shutdown = async () => {
   console.log("Shutting down...");
