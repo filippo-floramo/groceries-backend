@@ -2,12 +2,12 @@ import { describe, test, beforeAll, afterAll, expect, beforeEach, afterEach } fr
 import { connectTestDB, disconnectDb } from "../../../config/db"
 import { List } from "../models"
 import { listFixtures } from "./fixtures"
-import app from "../../../server"
+import { app, networkIp } from "../../../server"
 import { ZodError } from "zod"
 import { ItemUpdateBody, UpdateItemAction } from "../types"
 import { ModifyResult } from "mongoose"
 
-const apiUrl = "http://localhost:3000/api"
+const apiUrl = `http://${networkIp}:3000/api`
 
 beforeAll(async () => {
    //disconnect previous connections
@@ -48,7 +48,7 @@ describe("/lists endpoint", () => {
       const parsedRes = await res.json();
       expect(parsedRes).toEqual(listFixtures.oneItemList);
    });
-   
+
    test("GET /:id >> Should THROW ERROR when trying to get a single list", async () => {
 
       const wrongId = "65d6208cc8f69d5a5b42990a"
