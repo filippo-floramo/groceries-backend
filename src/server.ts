@@ -3,9 +3,10 @@ import { logger } from 'hono/logger'
 import { prettyJSON } from 'hono/pretty-json'
 import { cors } from "hono/cors";
 import { connectDB, disconnectDb } from './config/db';
-import { List } from './models/listModel';
+import { ListRoute } from './api/list';
 
-const app = new Hono().basePath('/api');
+
+export const app = new Hono().basePath('/api');
 
 connectDB();
 
@@ -21,17 +22,28 @@ app.use(
 )
 
 app.get('/', async (c) => {
-  const lollo = await List.find({name: 'lollo'});
-  console.log('lollo :>> ', lollo);
-  return c.json(lollo);
-})
+  return c.json("affammoc");
+});
+
+app.route('/lists', ListRoute);
+
+export const networkIp = Object.values(require("os").networkInterfaces())
+  .flat()
+  .filter((n: any) => n.family === "IPv4" && !n.internal)
+  .map((a: any) => a.address);
 
 const server = Bun.serve({
+  port: 3000,
   fetch: app.fetch,
-  port: Bun.env.PORT || 3000,
+  hostname: Bun.env.ENVIRONMENT === "development" ? networkIp[0] : "0.0.0.0",
 })
 
-console.log(`Listening on port ${server.url}`);
+
+
+console.table({
+  port: server.port,
+  hostname: server.hostname
+});
 
 const shutdown = async () => {
   console.log("Shutting down...");

@@ -16,23 +16,32 @@ const getDbURI = () => {
 const connectDB = async () => {
    try {
       const dbURI = getDbURI();
-      console.log('dbURI :>> ', dbURI);
-      const connection = await mongoose.connect(dbURI, {
+      const { connection } = await mongoose.connect(dbURI, {
          autoIndex: true,
+         dbName: 'anm_ktm'
       })
-      console.log(`MongoDB Connected: ${connection.connection.host}`);
+      console.log(`MongoDB Connected: ${connection.host} on port ${connection.port}`);
    } catch (err: any) {
       console.error(`Error: ${err.message}`)
       process.exit(1);
    }
 }
+const connectTestDB = async () => {
+   try {
+      const testConnection = await mongoose.connect("mongodb://localhost:27017", {
+         autoIndex: true,
+         dbName: 'anm_ktm_test'
+      })
+      return testConnection
+   } catch (err: any) {
+      console.error(`Error: ${err.message}`)
+      process.exit(1);
+   }
 
-
-
-
+}
 
 const disconnectDb = async () => {
    await mongoose.disconnect()
 }
 
-export { connectDB, disconnectDb }
+export { connectDB, connectTestDB, disconnectDb }
